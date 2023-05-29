@@ -1,8 +1,8 @@
 const express = require("express");
 const configViewEngine = require("./config/configView"); //config ViewEngine
-
+require("dotenv").config();
 const app = express(); // sử dụng các tính năng của thằng express
-const PORT = 8080;
+const PORT = process.env.PORT || 3030;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
