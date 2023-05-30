@@ -14,13 +14,14 @@
   </head>
   <body>
     <div class="container mt-5">
-      <form>
+      <form method="post" action="/user/edit/<%= UserInfo[0].id %>?_method=PUT">
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">First Name</label>
           <input
             type="text"
             class="form-control"
             value="<%= UserInfo[0].firstName %>"
+            name="firstName"
           />
         </div>
 
@@ -30,6 +31,7 @@
             type="text"
             class="form-control"
             value="<%= UserInfo[0].lastName %>"
+            name="lastName"
           />
         </div>
         <div class="mb-3">
@@ -38,6 +40,7 @@
             type="email"
             class="form-control"
             value="<%= UserInfo[0].email %>"
+            name="email"
           />
         </div>
         <div class="mb-3">
@@ -46,9 +49,10 @@
             type="text"
             class="form-control"
             value="<%= UserInfo[0].address %>"
+            name="address"
           />
         </div>
-        <a href="/user/edit/<%= UserInfo[0].id %>" class="btn btn-primary">EDIT</a>
+        <button type="submit" class="btn btn-primary">EDIT</button>
       </form>
     </div>
   </body>
