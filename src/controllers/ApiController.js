@@ -29,7 +29,7 @@ const getUserDetail = async (req, res) => {
 const addNewUser = async (req, res) => {
   let { firstName, lastName, email, address } = await req.body;
   if (!firstName || !lastName || !email || !address) {
-    return res.json({ error: "Empty value" });
+    return res.status(500).json({ error: "Empty value" });
   }
   const conn = await connection;
   const query = `INSERT INTO users VALUES (?,?,?,?,?)`;
@@ -45,7 +45,7 @@ const editUser = async (req, res) => {
   let { firstName, lastName, email, address } = await req.body;
   let id = await req.params.userId;
   if (!firstName || !lastName || !email || !address) {
-    return res.json({ error: "Empty value" });
+    return res.status(500).json({ error: "Empty value" });
   }
   const conn = await connection;
   const query = `UPDATE users SET firstName = ?, lastName = ?, email = ?, address = ? WHERE id = ? `;
