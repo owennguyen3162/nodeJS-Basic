@@ -29,6 +29,7 @@ const getEditUser = async (req, res) => {
   const query = `SELECT * FROM users where id = ?`;
   try {
     const [data] = await conn.execute(query, [userId]);
+    console.log(data);
     return res.render("editUser.ejs", { UserInfo: data });
   } catch (error) {
     console.log(error);
@@ -41,7 +42,10 @@ const getAddUSer = async (req, res) => {
 
 const addNewUser = async (req, res) => {
   let { firstName, lastName, email, address } = await req.body;
-  let image = await req.file.filename;
+  let image;
+  if (req.file) {
+    image = await req.file.filename;
+  }
   if (!firstName || !lastName || !email || !address || !image) {
     return res.json({ error: "Empty value" });
   }
@@ -64,14 +68,29 @@ const addNewUser = async (req, res) => {
 
 const editUser = async (req, res) => {
   let { firstName, lastName, email, address } = await req.body;
+  let image;
+  if (req.file) {
+    image = await req.file.filename;
+  }
   let id = await req.params.userId;
   if (!firstName || !lastName || !email || !address) {
     return res.json({ error: "Empty value" });
   }
   const conn = await connection;
-  const query = `UPDATE users SET firstName = ?, lastName = ?, email = ?, address = ? WHERE id = ? `;
+  const query = image
+    ? `UPDATE users SET image = ?, firstName = ?, lastName = ?, email = ?, address = ? WHERE id = ? `
+    : `UPDATE users SET firstName = ?, lastName = ?, email = ?, address = ? WHERE id = ? `;
   try {
-    await conn.execute(query, [firstName, lastName, email, address, id]);
+    image
+      ? await conn.execute(query, [
+          image,
+          firstName,
+          lastName,
+          email,
+          address,
+          id,
+        ])
+      : await conn.execute(query, [firstName, lastName, email, address, id]);
     return res.redirect("/");
   } catch (error) {
     console.log(error);

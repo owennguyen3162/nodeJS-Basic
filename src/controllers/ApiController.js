@@ -28,13 +28,24 @@ const getUserDetail = async (req, res) => {
 
 const addNewUser = async (req, res) => {
   let { firstName, lastName, email, address } = await req.body;
-  if (!firstName || !lastName || !email || !address) {
-    return res.status(500).json({ error: "Empty value" });
+  let image;
+  if (req.file) {
+    image = await req.file.filename;
+  }
+  if (!firstName || !lastName || !email || !address || !image) {
+    return res.status(500).json({ msg: "Empty value" });
   }
   const conn = await connection;
-  const query = `INSERT INTO users VALUES (?,?,?,?,?)`;
+  const query = `INSERT INTO users VALUES (?,?,?,?,?,?)`;
   try {
-    await conn.execute(query, [null, firstName, lastName, email, address]);
+    await conn.execute(query, [
+      null,
+      image,
+      firstName,
+      lastName,
+      email,
+      address,
+    ]);
     return res.status(201).json({ msg: "created" });
   } catch (error) {
     return res.status(500).json({ msg: "server error" });
@@ -43,26 +54,36 @@ const addNewUser = async (req, res) => {
 
 const editUser = async (req, res) => {
   let { firstName, lastName, email, address } = await req.body;
+  let image;
+  if (req.file) {
+    image = await req.file.filename;
+  }
   let id = await req.params.userId;
   if (!firstName || !lastName || !email || !address) {
-    return res.status(500).json({ error: "Empty value" });
+    return res.status(500).json({ msg: "Empty value" });
   }
+
   const conn = await connection;
-  const query = `UPDATE users SET firstName = ?, lastName = ?, email = ?, address = ? WHERE id = ? `;
+  const query = image
+    ? `UPDATE users SET image = ?, firstName = ?, lastName = ?, email = ?, address = ? WHERE id = ? `
+    : `UPDATE users SET firstName = ?, lastName = ?, email = ?, address = ? WHERE id = ? `;
   try {
-    const [data] = await conn.execute(query, [
-      firstName,
-      lastName,
-      email,
-      address,
-      id,
-    ]);
+    const data = image
+      ? await conn.execute(query, [
+          image,
+          firstName,
+          lastName,
+          email,
+          address,
+          id,
+        ])
+      : await conn.execute(query, [firstName, lastName, email, address, id]);
     if (data.affectedRows === 0) {
       return res.status(404).json({ msg: "not found" });
     }
     return res.status(200).json({ msg: "updated" });
   } catch (error) {
-    return res.status(500).json({ msg: "server error" });
+    return res.status(500).json({ msg: "error " + error });
   }
 };
 
