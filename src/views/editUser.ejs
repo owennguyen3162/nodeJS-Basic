@@ -14,7 +14,20 @@
   </head>
   <body>
     <div class="container mt-5">
-      <form method="post" action="/user/edit/<%= UserInfo[0].id %>?_method=PUT">
+      <form method="post" action="/user/edit/<%= UserInfo[0].id %>?_method=PUT" enctype="multipart/form-data">
+        <img
+          src="/<%= UserInfo[0].image %>"
+          alt="<%= UserInfo[0].firstName %>"
+          style="width: 100px; height: 100px;"
+        />
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Image</label>
+          <input
+            type="file"
+            class="form-control"
+            name="image"
+          />
+        </div>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">First Name</label>
           <input
