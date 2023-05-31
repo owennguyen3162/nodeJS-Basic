@@ -2,8 +2,12 @@ const express = require("express");
 
 const router = express.Router();
 const HomeController = require("../controllers/HomeController");
-
-router.post("/user/addUser/store", HomeController.addNewUser);
+const upload = require("../middleware/upload");
+router.post(
+  "/user/addUser/store",
+  upload.single("image"),
+  HomeController.addNewUser
+);
 router.put("/user/edit/:userId", HomeController.editUser);
 router.delete("/user/delete/:userId", HomeController.deleteUser);
 

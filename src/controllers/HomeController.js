@@ -41,13 +41,21 @@ const getAddUSer = async (req, res) => {
 
 const addNewUser = async (req, res) => {
   let { firstName, lastName, email, address } = await req.body;
-  if (!firstName || !lastName || !email || !address) {
+  let image = await req.file.filename;
+  if (!firstName || !lastName || !email || !address || !image) {
     return res.json({ error: "Empty value" });
   }
   const conn = await connection;
-  const query = `INSERT INTO users VALUES (?,?,?,?,?)`;
+  const query = `INSERT INTO users VALUES (?,?,?,?,?,?)`;
   try {
-    await conn.execute(query, [null, firstName, lastName, email, address]);
+    await conn.execute(query, [
+      null,
+      image,
+      firstName,
+      lastName,
+      email,
+      address,
+    ]);
     return res.redirect("/");
   } catch (error) {
     console.log(error);

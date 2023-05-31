@@ -59,6 +59,7 @@
           <thead>
             <tr>
               <th scope="col">#</th>
+              <th scope="col">Image</th>
               <th scope="col">First</th>
               <th scope="col">Last</th>
               <th scope="col">email</th>
@@ -72,6 +73,7 @@
             <% dataUser.forEach((item) => { %>
             <tr>
               <th scope="row"><%= item.id %></th>
+              <td><img src="<%= item.image %>" alt="<%= item.firstName %>" style="width: 100px; height:100px;"></td>
               <td><%= item.firstName %></td>
               <td><%= item.lastName %></td>
               <td><%= item.email %></td>

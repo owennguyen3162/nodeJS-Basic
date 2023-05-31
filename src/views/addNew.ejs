@@ -12,7 +12,12 @@
 
 <body>
   <div class="container mt-5">
-    <form method="post" action="/user/addUser/store">
+    <form method="post" action="/user/addUser/store" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Image</label>
+        <input type="file" class="form-control" name="image" />
+      </div>
+      
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">First Name</label>
         <input type="text" class="form-control" name="firstName" />
