@@ -8,7 +8,11 @@ router.post(
   upload.single("image"),
   HomeController.addNewUser
 );
-router.put("/user/edit/:userId", HomeController.editUser);
+router.put(
+  "/user/edit/:userId",
+  upload.single("image"),
+  HomeController.editUser
+);
 router.delete("/user/delete/:userId", HomeController.deleteUser);
 
 router.get("/user/detail/:id", HomeController.getUserDetail);
